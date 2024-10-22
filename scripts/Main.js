@@ -12,7 +12,7 @@ function executeWidgetCode(){
                     i3DXCompassServices.getServiceUrl(
                         {
                             serviceName: serviceNameToGet,
-                            platformId: 'OnPremise',
+                            platformId: widget.getValue('x3dPlatformId'),
                             onComplete: (url) => resolve(url),
                             onFailure: (error) => reject(error),
                         }
@@ -52,7 +52,9 @@ function executeWidgetCode(){
                             securitycontext: widget.getPreference("securityContext").value,
                             "ENO_CSRF_TOKEN": csrfToken,
                         },
-                        data: data,
+                        data: {...data,
+                            tenant: widget.getValue('x3dPlatformId'),
+                        },
                         onComplete: (dataOutput) => myWidget.displayResult(JSON.parse(dataOutput)),
                         onFailure: (error) => myWidget.displayResult(error),
                     })})
