@@ -7,11 +7,11 @@ function executeWidgetCode(){
                 widget.getElement('#responseOutput').textContent = JSON.stringify(data);
             },
 
-            getServiceUrl: function() {
+            getServiceUrl: function(serviceNameToGet) {
                 return new Promise((resolve,reject) => {
                     i3DXCompassServices.getServiceUrl(
                         {
-                            serviceName: '3DSpace',
+                            serviceName: serviceNameToGet,
                             platformId: 'OnPremise',
                             onComplete: (url) => resolve(url),
                             onFailure: (error) => reject(error),
@@ -22,7 +22,7 @@ function executeWidgetCode(){
 
             getCSRFToken: function() {
                 return(new Promise((resolve,reject) => {
-                    myWidget.getServiceUrl().then((serviceUrl) => {
+                    myWidget.getServiceUrl('3DSpace').then((serviceUrl) => {
                         const url = serviceUrl + "/resources/v1/application/CSRF"
                         WAFData.authenticatedRequest(url, {
                             method: "GET",
@@ -74,6 +74,18 @@ function executeWidgetCode(){
                 <pre id='responseOutput'></pre>
                 </div>`;
 
+                if (widget.getPreference("fillServiceUrl").value)
+                {
+                    const nodeInput = widget.getElement("#url");
+
+                    if (widget.getPreference("serviceUrl").value !== "")
+                    {
+                        myWidget.getServiceUrl(widget.getPreference("serviceUrl").value).then((serviceUrl) => {
+                            nodeInput.value = serviceUrl;
+                        })
+                    }
+                }
+                
                 const nodeSend = widget.createElement('button', {
                     events: {
                         click : myWidget.handleClickButton,

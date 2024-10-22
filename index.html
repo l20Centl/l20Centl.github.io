@@ -12,8 +12,10 @@
 	<meta name="strictMode" content="false" />
 
 	<widget:preferences>			
-		<widget:preference type="text" name="securityContext" defaultValue='VPLMProjectLeader.DPS.PRIVATE_TLS'></widget:preference>
-		<widget:preference type="text" name="CSRFToken" defaultValue=""></widget:preference>
+		<widget:preference type="text" name="securityContext" label="Contexte de sécurité : " defaultValue='VPLMProjectLeader.DPS.PRIVATE_TLS'></widget:preference>
+		<widget:preference type="text" name="CSRFToken" label="Token CSRF" defaultValue=""></widget:preference>
+		<widget:preference type="text" name="serviceUrl" label="Service URL à récupérer" defaultValue=""></widget:preference>
+		<widget:preference type="boolean" name="fillServiceUrl" label="Remplissage de l'url de service" defaultValue="false"></widget:preference>
 	</widget:preferences>
 
 	<script type="text/javascript" src="http://uwa.netvibes.com/lib/c/UWA/js/UWA_Standalone_Alone.js"></script>
