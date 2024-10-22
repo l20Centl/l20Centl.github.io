@@ -1,1 +1,43 @@
-"Hello World" 
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:widget="http://www.netvibes.com/ns/">
+
+<head>
+	<title>Test REST 3DX</title>
+
+	<meta name="author" content="DSIS" />
+	<meta name="description" content="REST testing widget" />
+	<meta name="apiVersion" content="1.0" />
+	<meta name="debugMode" content="true" />
+	<meta name="strictMode" content="false" />
+
+	<widget:preferences>			
+		<widget:preference type="text" name="securityContext" defaultValue='VPLMProjectLeader.DPS.PRIVATE_TLS'></widget:preference>
+		<widget:preference type="text" name="CSRFToken" defaultValue=""></widget:preference>
+	</widget:preferences>
+
+	<script type="text/javascript" src="https://uwa.netvibes.com/lib/c/UWA/js/UWA_Standalone_Alone.js"></script>
+
+	<!-- Widget files -->
+	<link rel="stylesheet" type="text/css" href="styles/Main.css" />
+	<script type="text/javascript" src="scripts/Main.js"></script>
+
+	<script type="text/javascript">
+		function widgetLoading() {
+			if (widget) {
+				executeWidgetCode();
+			} else {
+				console.warn("Defered widget Loading");
+				setTimeout(widgetLoading, 100); //Wait for widget object to be added correctly
+			}
+		}
+		widgetLoading();
+	</script>
+
+</head>
+
+<body>
+	<p>Loading...</p>
+</body>
+
+</html>
