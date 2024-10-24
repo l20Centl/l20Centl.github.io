@@ -33,6 +33,14 @@ function executeWidgetCode(){
                 }))
             },
 
+            addTenantIfMissing: function(url) {
+                let urlObj = new URL(url);
+                if(!urlObj.searchParams.has('tenant')) {
+                    urlObj.searchParams.append('tenant', widget.getValue('x3dPlatformId'));
+                }
+                return urlObj.toString();
+            },
+
             handleClickButton: function() {
                 const method = widget.getElement('#method-select').value;
                 let csrfPromise = Promise.resolve();
@@ -44,17 +52,16 @@ function executeWidgetCode(){
                 csrfPromise.then(()=>{
                     const csrfToken = widget.getValue("CSRFToken");
                     const url = widget.getElement('#url').value;
+                    const requestUrl = myWidget.addTenantIfMissing(url);
                     const data = widget.getElement('#data').value;
-                    WAFData.authenticatedRequest(url, {
+                    WAFData.authenticatedRequest(requestUrl, {
                         method: method,
                         headers: {
                             'Content-Type': 'application/json',
                             securitycontext: widget.getPreference("securityContext").value,
                             "ENO_CSRF_TOKEN": csrfToken,
                         },
-                        data: {...data,
-                            tenant: widget.getValue('x3dPlatformId'),
-                        },
+                        data: data,
                         onComplete: (dataOutput) => myWidget.displayResult(JSON.parse(dataOutput)),
                         onFailure: (error) => myWidget.displayResult(error),
                     })})
