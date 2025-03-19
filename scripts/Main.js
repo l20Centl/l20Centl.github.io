@@ -118,10 +118,10 @@ function executeWidgetCode(){
                     events: {
                         click : myWidget.handleClickCopyClipboardButton,
                     },
-                    text: "Copier dans le presse-papier"
+                    text: "Copier la réponse dans le presse-papier"
                 });
 
-                widget.getElement('.RestRequestContainer').appendChild(nodeCopyClipboard);
+                widget.getElement('.response').appendChild(nodeCopyClipboard);
             },
 
         }
