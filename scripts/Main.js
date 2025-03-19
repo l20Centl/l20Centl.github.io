@@ -4,7 +4,7 @@ function executeWidgetCode(){
 
             displayResult: function(data) {
                 console.log(data);
-                widget.getElement('#responseOutput').textContent = JSON.stringify(data);
+                widget.getElement('#responseOutput').textContent = JSON.stringify(data, null, 2);
             },
 
             getServiceUrl: function(serviceNameToGet) {
@@ -67,20 +67,29 @@ function executeWidgetCode(){
                     })})
             },
 
+            handleClickCopyClipboardButton: function(){
+                const responseText = widget.getElement('#responseOutput').textContent;
+                navigator.clipboard.writeText(responseText).then(() => {
+                    alert('Réponse copiée dans le presse-papier !');
+                }).catch(err => {
+                    console.error('Erreur lors de la copie :', err);
+                });
+            },
+
             onLoadWidget : function() {
                 widget.body.innerHTML = `<div class="RestRequestContainer">
                 <select name='method' id='method-select'>
-                <option value="GET"> GET </option>
-                <option value="POST"> POST </option>
-                <option value="PUT"> PUT </option>
-                <option value="PATCH"> PATCH </option>
-                <option value="DELETE"> DELETE </option>
+                    <option value="GET"> GET </option>
+                    <option value="POST"> POST </option>
+                    <option value="PUT"> PUT </option>
+                    <option value="PATCH"> PATCH </option>
+                    <option value="DELETE"> DELETE </option>
                 </select>
                 <input type='text' id='url' placeholder="Entrer l'url">
                 <textarea id='data' placeholder='Entrer le body de la requête (JSON)'></textarea>
                 </div>
-                <div class = 'response'>
-                <pre id='responseOutput'></pre>
+                <div class='response'>
+                    <pre id='responseOutput' style="max-height: 300px; overflow: auto; border: 1px solid #ccc; padding: 10px; background: #f9f9f9;"></pre>
                 </div>`;
 
                 if (widget.getPreference("fillServiceUrl").value)
@@ -103,6 +112,14 @@ function executeWidgetCode(){
                 })
 
                 widget.getElement('.RestRequestContainer').appendChild(nodeSend);
+
+                // Ajouter un événement pour copier la réponse dans le presse-papier
+                const nodeCopyClipboard = widget.createElement('button', {
+                    events: {
+                        click : myWidget.handleClickCopyClipboardButton,
+                    },
+                    text: "Copier dans le presse-papier"
+                })
             },
 
         }
