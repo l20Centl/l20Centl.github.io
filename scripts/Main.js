@@ -100,16 +100,16 @@ function executeWidgetCode(){
                     {
                         myWidget.getServiceUrl(widget.getPreference("serviceUrl").value).then((serviceUrl) => {
                             nodeInput.value = serviceUrl;
-                        })
-                    }
-                }
+                        });
+                    };
+                };
                 
                 const nodeSend = widget.createElement('button', {
                     events: {
                         click : myWidget.handleClickButton,
                     },
                     text: 'Envoyer la requête'
-                })
+                });
 
                 widget.getElement('.RestRequestContainer').appendChild(nodeSend);
 
@@ -119,7 +119,9 @@ function executeWidgetCode(){
                         click : myWidget.handleClickCopyClipboardButton,
                     },
                     text: "Copier dans le presse-papier"
-                })
+                });
+
+                widget.getElement('.RestRequestContainer').appendChild(nodeCopyClipboard);
             },
 
         }
