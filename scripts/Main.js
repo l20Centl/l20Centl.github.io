@@ -1,5 +1,6 @@
 function executeWidgetCode(){
-    require(["DS/i3DXCompassServices/i3DXCompassServices","DS/WAFData/WAFData"],function(i3DXCompassServices, WAFData){
+    require(["DS/i3DXCompassServices/i3DXCompassServices","DS/WAFData/WAFData", "DS/DataDragAndDrop/DataDragAndDrop"],
+    function(i3DXCompassServices, WAFData, DataDragAndDrop){
         var myWidget = {
 
             contentData : {},
