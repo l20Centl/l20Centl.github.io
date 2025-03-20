@@ -80,23 +80,27 @@ function executeWidgetCode(){
             },
 
             handleClickOpenButton: function() {
-                i3DXCompassServices.getCompatibleApps({
-                    content: myWidget.contentData,
-                    onComplete: function(data) {
-                        console.log(data);
-                        for (let i=0; i<data.length; i++)
-                            if (data[i].name === "X3DPLAW_AP")
-                            {
-                                data[i].launchApp();
-                                break;
-                            }
-                    }
-                })
+                if (myWidget.contentData && Object.keys(myWidget.contentData).length > 0) {
+                    i3DXCompassServices.getCompatibleApps({
+                        content: myWidget.contentData,
+                        onComplete: function(data) {
+                            console.log(data);
+                            for (let i=0; i<data.length; i++)
+                                if (data[i].name === "X3DPLAW_AP")
+                                {
+                                    data[i].launchApp();
+                                    break;
+                                }
+                        }
+                    })
+                }
             },
 
             handleClickClearButton: function() {
                 myWidget.contentData = {};
-                widget.getElement('.droppableElement').innerHTML = "Drag file to this area to upload";
+                const dropElement = widget.getElement('.droppableElement');
+                dropElement.innerHTML = "Drag file to this area to upload";
+                dropElement.style.border = "2px dashed";
             },
 
             onLoadWidget : function() {
@@ -141,10 +145,13 @@ function executeWidgetCode(){
                     leave: () => dropElement.style.border = initialBorderStyle,
                     over: () => console.log('Element is being dragged over the drop zone'),
                     drop: (droppedData) => {
-                        const dataToSet = JSON.parse(droppedData);
-                        if (dataToSet.data.items.length > 0) {
-                            myWidget.contentData = dataToSet;
-                            dropElement.innerHTML = dataToSet.data.items[0].displayName;
+                        if (!myWidget.contentData || Object.keys(myWidget.contentData).length === 0) {
+                            const dataToSet = JSON.parse(droppedData);
+                            if (dataToSet.data.items.length > 0) {
+                                myWidget.contentData = dataToSet;
+                                dropElement.innerHTML = dataToSet.data.items[0].displayName;
+                                dropElement.style.border = '2px solid green';
+                            }
                         }
                     }
                 });
