@@ -94,92 +94,63 @@ function executeWidgetCode(){
                 })
             },
 
+            handleClickClearButton: function() {
+                myWidget.contentData = {};
+                widget.getElement('.droppableElement').innerHTML = "Drag file to this area to upload";
+            },
+
             onLoadWidget : function() {
-                widget.body.innerHTML = `<div class="RestRequestContainer">
-                <select name='method' id='method-select'>
-                    <option value="GET"> GET </option>
-                    <option value="POST"> POST </option>
-                    <option value="PUT"> PUT </option>
-                    <option value="PATCH"> PATCH </option>
-                    <option value="DELETE"> DELETE </option>
-                </select>
-                <input type='text' id='url' placeholder="Entrer l'url">
-                <textarea id='data' placeholder='Entrer le body de la requête (JSON)'></textarea>
+                widget.body.innerHTML = `
+                <div class="section">
+                    <h2>API REST test</h2>
+                    <div class="RestRequestContainer">
+                        <select id='method-select'>
+                            <option value="GET"> GET </option>
+                            <option value="POST"> POST </option>
+                            <option value="PUT"> PUT </option>
+                            <option value="PATCH"> PATCH </option>
+                            <option value="DELETE"> DELETE </option>
+                        </select>
+                        <input type='text' id='url' placeholder="Entrer l'url">
+                        <textarea id='data' placeholder='Entrer le body de la requête (JSON)'></textarea>
+                        <button id='sendRequest'>Envoyer la requête</button>
+                    </div>
+                    <div class='response'>
+                        <pre id='responseOutput' style="max-height: 300px; overflow: auto; border: 1px solid #ccc; padding: 10px; background: #f9f9f9;"></pre>
+                        <button id='copyResponse'>Copier la réponse dans le presse-papier</button>
+                    </div>
                 </div>
-                <div class='response'>
-                    <pre id='responseOutput' style="max-height: 300px; overflow: auto; border: 1px solid #ccc; padding: 10px; background: #f9f9f9;"></pre>
+                
+                <div class="section">
+                    <h2>Drag & Drop</h2>
+                    <div class='droppableElement' style="border: 2px dashed; padding: 10px;">Drag file to this area to upload</div>
+                    <button id='clearDrop'>Vider</button>
+                    <button id='open3DPlay'>Ouvrir dans 3DPlay</button>
                 </div>`;
 
-                if (widget.getPreference("fillServiceUrl").value)
-                {
-                    const nodeInput = widget.getElement("#url");
-
-                    if (widget.getPreference("serviceUrl").value !== "")
-                    {
-                        myWidget.getServiceUrl(widget.getPreference("serviceUrl").value).then((serviceUrl) => {
-                            nodeInput.value = serviceUrl;
-                        });
-                    };
-                };
+                widget.getElement('#sendRequest').addEventListener('click', myWidget.handleClickButton);
+                widget.getElement('#copyResponse').addEventListener('click', myWidget.handleClickCopyClipboardButton);
+                widget.getElement('#clearDrop').addEventListener('click', myWidget.handleClickClearButton);
+                widget.getElement('#open3DPlay').addEventListener('click', myWidget.handleClickOpenButton);
                 
-                const nodeSend = widget.createElement('button', {
-                    events: {
-                        click : myWidget.handleClickButton,
-                    },
-                    text: 'Envoyer la requête'
-                });
-
-                widget.getElement('.RestRequestContainer').appendChild(nodeSend);
-
-                // Ajouter un événement pour copier la réponse dans le presse-papier
-                const nodeCopyClipboard = widget.createElement('button', {
-                    events: {
-                        click : myWidget.handleClickCopyClipboardButton,
-                    },
-                    text: "Copier la réponse dans le presse-papier"
-                });
-
-                widget.getElement('.response').appendChild(nodeCopyClipboard);
-
-                //Ajoute du drag & drop pour les tests d'ouverture de widget 3DX.
-                const dropElement = widget.createElement('div', {
-                    'class': 'droppableElement',
-                    html: "Drag file to this area to upload",
-                    styles: {
-                        border: "2px dashed",
-                        width : "auto",
-                        height : "auto",
-                        padding : "2px",
-                    },
-                });
-                widget.body.appendChild(dropElement);
-
+                const dropElement = widget.getElement('.droppableElement');
                 const initialBorderStyle = dropElement.style.border;
-
+                
                 DataDragAndDrop.droppable(dropElement, {
                     enter: () => dropElement.style.border = '2px solid green',
                     leave: () => dropElement.style.border = initialBorderStyle,
                     over: () => console.log('Element is being dragged over the drop zone'),
                     drop: (droppedData) => {
                         const dataToSet = JSON.parse(droppedData);
-                        if (Object.keys(dataToSet).length > 0 && dataToSet.data.items.length > 0)
-                        {
+                        if (dataToSet.data.items.length > 0) {
                             myWidget.contentData = dataToSet;
-                            const dataElement = widget.createElement('p', {
-                                'class': 'dataElement',
-                                html: myWidget.contentData.data.items[0].displayName,
-                                events: {
-                                    click: myWidget.handleClickOpenButton,
-                                },
-                            },);
-                            widget.body.removeChild(dropElement);
-                            widget.body.appendChild(dataElement);
+                            dropElement.innerHTML = dataToSet.data.items[0].displayName;
                         }
                     }
-                })
+                });
             },
+        };
 
-        }
         widget.addEvent("onLoad", myWidget.onLoadWidget);
         widget.addEvent("onRefresh", myWidget.onLoadWidget);
     })
