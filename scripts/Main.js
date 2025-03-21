@@ -132,6 +132,18 @@ function executeWidgetCode(){
                     <button id='open3DPlay'>Ouvrir dans 3DPlay</button>
                 </div>`;
 
+                if (widget.getPreference("fillServiceUrl").value)
+                {
+                    const nodeInput = widget.getElement("#url");
+
+                    if (widget.getPreference("serviceUrl").value !== "")
+                    {
+                        myWidget.getServiceUrl(widget.getPreference("serviceUrl").value).then((serviceUrl) => {
+                            nodeInput.value = serviceUrl;
+                        })
+                    }
+                }
+
                 widget.getElement('#sendRequest').addEventListener('click', myWidget.handleClickButton);
                 widget.getElement('#copyResponse').addEventListener('click', myWidget.handleClickCopyClipboardButton);
                 widget.getElement('#clearDrop').addEventListener('click', myWidget.handleClickClearButton);
