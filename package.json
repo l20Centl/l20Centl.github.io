@@ -2,6 +2,6 @@
   "name": "vrp-widget",
   "version": "0.0.1",
   "scripts": {
-    "build": "(rmdir /s /q apps 2>nul & mkdir apps) & robocopy . apps /E /XD apps .git .gitignore > nul"
+    "build": "rm -rf apps && mkdir apps && cp -r src/* apps/"
   }
 }
