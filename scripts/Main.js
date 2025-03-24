@@ -44,11 +44,32 @@ function executeWidgetCode(){
                         WAFData.authenticatedRequest(requestUrl, {
                             method: "GET",
                             type: "json",
-                            onComplete: (securityContextResponse) => resolve(securityContextResponse),
+                            onComplete: (securityContextResponse) => {
+                                const listOfSecurityContext = myWidget.computeSecurityContextResponse(securityContextResponse);
+                                resolve(listOfSecurityContext);
+                            },
                             onFailure:(error) => reject(error),
                         })
                     })
                 }))
+            },
+
+            computeSecurityContextResponse: function(securityContextResponse) {
+                let listOfSecurityContext = [];
+                if (securityContextResponse)
+                {
+                    const listOfCollabspaces = securityContextResponse.collabspaces;
+                    listOfCollabspaces.map((collabspace) => {
+                        const collabspaceName = collabspace.name;
+                        const collabspaceCouples = collabspace.couple;
+                        collabspaceCouples.map((couple) => {
+                            const organizationName = couple.organization.name;
+                            const roleName = couple.role.name;
+                            listOfSecurityContext.push(roleName + "." + organizationName + "." + collabspaceName);
+                        })
+                    })
+                }
+                return (listOfSecurityContext);
             },
 
             addTenantIfMissing: function(url) {
