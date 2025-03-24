@@ -136,6 +136,9 @@ function executeWidgetCode(){
                                     data[i].launchApp();
                                     break;
                                 }
+                        },
+                        onFailure: function(error) {
+                            alert(error);
                         }
                     })
                 }

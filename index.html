@@ -12,7 +12,9 @@
 	<meta name="strictMode" content="false" />
 
 	<widget:preferences>			
-		<widget:preference type="list" name="securityContext" label="Contexte de sécurité : "></widget:preference>
+		<widget:preference type="list" name="securityContext" label="Contexte de sécurité : ">
+			<widget:option label="No security context" value="No security context">
+		</widget:preference>
 		<widget:preference type="text" name="CSRFToken" label="Token CSRF" defaultValue=""></widget:preference>
 		<widget:preference type="text" name="serviceUrl" label="Service URL à récupérer" defaultValue="3DSpace"></widget:preference>
 		<widget:preference type="boolean" name="fillServiceUrl" label="Remplissage de l'url de service" defaultValue="false"></widget:preference>
