@@ -170,7 +170,7 @@ function executeWidgetCode(){
                             const dataToSet = JSON.parse(droppedData);
                             if (dataToSet.data.items.length > 0) {
                                 myWidget.contentData = dataToSet;
-                                dropElement.innerHTML = dataToSet.data.items[0].displayName;
+                                dropElement.innerHTML = JSON.stringify(dataToSet, null, 2);
                                 dropElement.style.border = '2px solid green';
                             }
                         }
