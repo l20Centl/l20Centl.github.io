@@ -61,7 +61,7 @@ function executeWidgetCode(){
                     const listOfCollabspaces = securityContextResponse.collabspaces;
                     listOfCollabspaces.map((collabspace) => {
                         const collabspaceName = collabspace.name;
-                        const collabspaceCouples = collabspace.couple;
+                        const collabspaceCouples = collabspace.couples;
                         collabspaceCouples.map((couple) => {
                             const organizationName = couple.organization.name;
                             const roleName = couple.role.name;
