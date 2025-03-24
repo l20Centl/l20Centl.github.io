@@ -130,12 +130,16 @@ function executeWidgetCode(){
                         content: myWidget.contentData,
                         onComplete: function(data) {
                             console.log(data);
+                            let found = false;
                             for (let i=0; i<data.length; i++)
                                 if (data[i].name === "X3DPLAW_AP")
                                 {
+                                    found = true;
                                     data[i].launchApp();
                                     break;
                                 }
+                            if (!found)
+                                alert("Can't launch object in 3DPlay");
                         },
                         onFailure: function(error) {
                             alert(error);
@@ -155,7 +159,13 @@ function executeWidgetCode(){
                 //Compute security context
                 myWidget.getListOfSecurityContext().then((securityContextList) =>
                 {
-                    console.log(securityContextList);
+                    let securityContextPreference = widget.getPreference("securityContext");
+                    if (securityContextList.length > 0)
+                        securityContextPreference.options = [];
+                    securityContextList.map((securityContext) => {
+                        securityContextPreference.options.push({ value : securityContext, label : securityContext});
+                    })
+                    widget.addPreference(securityContextPreference);
                 })
 
                 widget.body.innerHTML = `
