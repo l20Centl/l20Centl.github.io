@@ -36,6 +36,21 @@ function executeWidgetCode(){
                 }))
             },
 
+            getListOfSecurityContext: function() {
+                return(new Promise((resolve,reject) => {
+                    myWidget.getServiceUrl('3DSpace').then((serviceUrl) => {
+                        const url = serviceUrl + "/resources/modeler/pno/person?current=true&select=collabspaces";
+                        const requestUrl = myWidget.addTenantIfMissing(url);
+                        WAFData.authenticatedRequest(requestUrl, {
+                            method: "GET",
+                            type: "json",
+                            onComplete: (securityContextResponse) => resolve(securityContextResponse),
+                            onFailure:(error) => reject(error),
+                        })
+                    })
+                }))
+            },
+
             addTenantIfMissing: function(url) {
                 let urlObj = new URL(url);
                 if(!urlObj.searchParams.has('tenant')) {
@@ -113,6 +128,12 @@ function executeWidgetCode(){
             },
 
             onLoadWidget : function() {
+                //Compute security context
+                myWidget.getListOfSecurityContext().then((securityContextList) =>
+                {
+                    console.log(securityContextList);
+                })
+
                 widget.body.innerHTML = `
                 <div class="section">
                     <h2>API REST test</h2>
