@@ -99,7 +99,7 @@ function executeWidgetCode(){
             handleClickClearButton: function() {
                 myWidget.contentData = {};
                 const dropElement = widget.getElement('.droppableElement');
-                dropElement.innerHTML = "Drag file to this area to upload";
+                dropElement.innerHTML = "Glisser un fichier dans cette zone pour le charger";
                 dropElement.style.border = "2px dashed";
             },
 
@@ -127,7 +127,7 @@ function executeWidgetCode(){
                 
                 <div class="section">
                     <h2>Drag & Drop</h2>
-                    <div class='droppableElement' style="border: 2px dashed; padding: 10px;">Drag file to this area to upload</div>
+                    <div class='droppableElement' style="border: 2px dashed; padding: 10px;">Glisser un fichier dans cette zone pour le charger</div>
                     <button id='clearDrop'>Vider</button>
                     <button id='open3DPlay'>Ouvrir dans 3DPlay</button>
                 </div>`;
