@@ -65,8 +65,17 @@ function executeWidgetCode(){
                             "ENO_CSRF_TOKEN": csrfToken,
                         },
                         data: data,
-                        onComplete: (dataOutput) => myWidget.displayResult(JSON.parse(dataOutput)),
-                        onFailure: (error) => myWidget.displayResult(error),
+                        type: "json",
+                        onComplete: (dataOutput) => myWidget.displayResult(dataOutput),
+                        onFailure: (error, errorOutput) => {
+                            if (errorOutput)
+                                myWidget.displayResult(errorOutput);
+                            else
+                            {
+                                let errorResponse = { message: "Unknown error", details: error.message };
+                                myWidget.displayResult(errorResponse);
+                            } 
+                        },
                     })})
             },
 
